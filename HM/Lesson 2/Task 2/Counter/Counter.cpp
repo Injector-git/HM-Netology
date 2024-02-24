@@ -14,8 +14,8 @@ public:
     void decrement() {
         value--;
     }
-    void print() {
-        std::cout << value << std::endl;
+    int get_value() {
+        return value;
     }
 };
 
@@ -25,6 +25,7 @@ int main()
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
 
+    Counter counter;
     std::string start_value;
     char command;
     bool exit = false;
@@ -35,7 +36,7 @@ int main()
         int value;
         std::cout << "Введите начальное значение счётчика: " << std::endl;
         std::cin >> value;
-        Counter counter(value);
+        counter = Counter(value);
     }
     else Counter counter;
 
@@ -48,7 +49,7 @@ int main()
             break;
         case '-': counter.decrement();
             break; 
-        case '=': counter.print();
+        case '=': std::cout << counter.get_value() << std::endl;
             break; 
         case 'x': exit = true;
             break; 
