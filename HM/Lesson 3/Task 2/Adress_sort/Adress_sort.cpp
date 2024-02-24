@@ -1,14 +1,14 @@
-﻿   #include <iostream>
-   #include <fstream>
-   #include<string>
-   #include <Windows.h>//для корректной работы кириллицы со стрингом
+﻿#include <iostream>
+#include <fstream>
+#include<string>
+#include <Windows.h>//для корректной работы кириллицы со стрингом
 
 class Adres {
-private:
+
     std::string city;
     std::string street;
     int house_number;
-    int apartment_number; 
+    int apartment_number;
 public:
     Adres(std::string city, std::string street, int house_number, int apartment_number)
     {
@@ -37,8 +37,9 @@ public:
         this->apartment_number = apartment_number;
     }
 
+
     std::string get_city() {
-        return city;
+        return  city;
     }
     std::string get_street() {
         return street;
@@ -51,6 +52,27 @@ public:
     }
 };
 
+void sort(Adres* adres, int count)
+{
+    while (count--)
+    {
+        bool swapped = false;
+
+        for (int i = 0; i < count; i++)
+        {
+            if ((adres[i].get_city()).at(0) > (adres[i + 1].get_city()).at(0))
+            {
+                Adres swap = adres[i];
+                adres[i] = adres[i + 1];
+                adres[i + 1] = swap;
+                swapped = true;
+            }
+        }
+
+        if (swapped == false)
+            break;
+    }
+}
 int count;
 
 int main()
@@ -83,14 +105,17 @@ int main()
             std::ofstream out("out.txt");
 
             if (out.is_open()) {
+                out << count << std::endl;
+                sort(adres, count);
                 for (int i = 0; i < count; i++) {
-                    out << adres[count - i - 1].get_city() << " " << adres[count - i - 1].get_street() << " " << adres[count - i - 1].get_house_number() << " " << adres[count - i - 1].get_apartment_number() << std::endl;
+                    out << adres[i].get_city() << " " << adres[i].get_street() << " " << adres[i].get_house_number() << " " << adres[i].get_apartment_number() << std::endl;
                 }
             }
             else std::cout << "не удалось открыть файл";
         }
         delete[] adres;
-    } else std::cout << "не удалось открыть файл";
+    }
+    else std::cout << "не удалось открыть файл";
 
 
 
