@@ -2,13 +2,9 @@
 #include <fstream>
 #include<string>
 #include <Windows.h>//для корректной работы кириллицы со стрингом
+//#include <clocale>
 
 class Adres {
-
-    std::string city;
-    std::string street;
-    int house_number;
-    int apartment_number;
 public:
     Adres(std::string city, std::string street, int house_number, int apartment_number)
     {
@@ -37,7 +33,6 @@ public:
         this->apartment_number = apartment_number;
     }
 
-
     std::string get_city() {
         return  city;
     }
@@ -50,6 +45,11 @@ public:
     int get_apartment_number() {
         return apartment_number;
     }
+private:
+    std::string city;
+    std::string street;
+    int house_number;
+    int apartment_number;
 };
 
 void sort(Adres* adres, int count)
@@ -60,7 +60,7 @@ void sort(Adres* adres, int count)
 
         for (int i = 0; i < count; i++)
         {
-            if ((adres[i].get_city()).at(0) > (adres[i + 1].get_city()).at(0))
+            if (adres[i].get_city() > adres[i + 1].get_city())
             {
                 Adres swap = adres[i];
                 adres[i] = adres[i + 1];
@@ -80,6 +80,7 @@ int main()
     //для корректной работы кириллицы со стрингом
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
+    //setlocale(LC_ALL, "Russian");
 
     std::ifstream in("in.txt");
     if (in.is_open()) {
@@ -102,17 +103,17 @@ int main()
             in >> value_int;
             adres[i].set_apartment_number(value_int);
 
-            std::ofstream out("out.txt");
 
-            if (out.is_open()) {
-                out << count << std::endl;
-                sort(adres, count);
-                for (int i = 0; i < count; i++) {
-                    out << adres[i].get_city() << " " << adres[i].get_street() << " " << adres[i].get_house_number() << " " << adres[i].get_apartment_number() << std::endl;
-                }
-            }
-            else std::cout << "не удалось открыть файл";
         }
+        std::ofstream out("out.txt");
+        if (out.is_open()) {
+            out << count << std::endl;
+            sort(adres, count);
+            for (int i = 0; i < count; i++) {
+                out << adres[i].get_city() << " " << adres[i].get_street() << " " << adres[i].get_house_number() << " " << adres[i].get_apartment_number() << std::endl;
+            }
+        }
+        else std::cout << "не удалось открыть файл";
         delete[] adres;
     }
     else std::cout << "не удалось открыть файл";
