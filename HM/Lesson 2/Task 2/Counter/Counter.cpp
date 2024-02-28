@@ -38,7 +38,6 @@ int main()
         std::cin >> value;
         counter = Counter(value);
     }
-    else Counter counter;
 
     do{
         std::cout << "Введите команду ('+', '-', '=' или 'x'): " << std::endl;
