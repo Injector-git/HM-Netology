@@ -1,0 +1,12 @@
+#pragma once
+#include "Figure.h"
+#include "Triangle.h"
+#include "RighTriangle.h"
+#include "IsoscelesTriangle.h"
+#include "EquilateralTriangle.h"
+#include "Quadrangle.h"
+#include "MyRectangle.h"
+#include "MyRectangle.h"
+#include "Square.h"
+#include "Parallelogram.h"
+#include "Rhombus.h"
