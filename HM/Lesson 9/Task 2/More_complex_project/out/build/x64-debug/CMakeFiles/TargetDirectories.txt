@@ -1,0 +1,3 @@
+D:/Netology/Netology HM/HM/Lesson 9/Task 2/More_complex_project/out/build/x64-debug/CMakeFiles/More_complex_project.dir
+D:/Netology/Netology HM/HM/Lesson 9/Task 2/More_complex_project/out/build/x64-debug/CMakeFiles/edit_cache.dir
+D:/Netology/Netology HM/HM/Lesson 9/Task 2/More_complex_project/out/build/x64-debug/CMakeFiles/rebuild_cache.dir

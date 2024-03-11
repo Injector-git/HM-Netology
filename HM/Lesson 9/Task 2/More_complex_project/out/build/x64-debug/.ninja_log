@@ -1,0 +1,16 @@
+# ninja log v5
+2	2038	7318460424361961	CMakeFiles/More_complex_project.dir/More_complex_project.cpp.obj	ffba714863cf2dd9
+26	200	7318480600576614	build.ninja	479daa66c51231ef
+9	2123	7318480336229998	CMakeFiles/More_complex_project.dir/Parallelogram.cpp.obj	964716f376cf92bd
+21	1784	7318470926200354	CMakeFiles/More_complex_project.dir/EquilateralTriangle.cpp.obj	e6c03b2ba3081402
+63	1742	7318472265950677	CMakeFiles/More_complex_project.dir/IsoscelesTriangle.cpp.obj	42af08905c3ebd74
+11	1765	7318472265950677	CMakeFiles/More_complex_project.dir/Figure.cpp.obj	7ee0cca6d5b03cf1
+15	2120	7318480336200055	CMakeFiles/More_complex_project.dir/MyRectangle.cpp.obj	7cbc593b3d1cb5b3
+18	2122	7318480336229998	CMakeFiles/More_complex_project.dir/Triangle.cpp.obj	4d644a04ec5f791
+14	207	7318480600576614	build.ninja	479daa66c51231ef
+223	1267	7318480614072115	CMakeFiles/More_complex_project.dir/IsoscelesTriangle.cpp.obj	42af08905c3ebd74
+146	1271	7318480614102029	CMakeFiles/More_complex_project.dir/RighTriangle.cpp.obj	e39a52f047ddf0e7
+15	1272	7318480614131949	CMakeFiles/More_complex_project.dir/Rhombus.cpp.obj	10c515fb1222bdfa
+218	1273	7318480614141933	CMakeFiles/More_complex_project.dir/Square.cpp.obj	1736ea9456bbb0e1
+12	1275	7318480614131949	CMakeFiles/More_complex_project.dir/Quadrangle.cpp.obj	89cccbbf0a9a7411
+1275	6199	7318480662417357	More_complex_project.exe	a61d8e66a5972e32
