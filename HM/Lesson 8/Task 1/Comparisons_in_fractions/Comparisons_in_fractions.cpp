@@ -3,6 +3,7 @@
 class Fraction
 {
 private:
+	int eps = std::numeric_limits<double>::epsilon();
 	int numerator_;
 	int denominator_;
 
@@ -14,34 +15,32 @@ public:
 	}
 
 	bool operator==(Fraction right) {
-		if (numerator_ == right.numerator_ && denominator_ == right.denominator_) return true;
+		if (abs(numerator_ / denominator_ - right.numerator_ / right.denominator_) == eps) return true;
 		else return false;
 	}
 
 	bool operator!=(Fraction right) {
-		if (numerator_ != right.numerator_ || denominator_ != right.denominator_) return true;
+		if (abs(numerator_ / denominator_ - right.numerator_ / right.denominator_) != eps) return true;
 		else return false;
 	}
 
 	bool operator<(Fraction right) {
-		if (numerator_ < right.numerator_) return true;
-		else if (denominator_ < right.denominator_)return true;
+		if (abs(numerator_ / denominator_ - right.numerator_ / right.denominator_) < eps) return true;
 		else return false;
 	}
 
 	bool operator>(Fraction right) {
-		if (numerator_ > right.numerator_) return true;
-		else if (denominator_ > right.denominator_)return true;
+		if (abs(numerator_ / denominator_ - right.numerator_ / right.denominator_) > eps) return true;
 		else return false;
 	}
 
 	bool operator<=(Fraction right) {
-		if (numerator_ <= right.numerator_ && denominator_ <= right.denominator_) return true;
+		if (abs(numerator_ / denominator_ - right.numerator_ / right.denominator_) <= eps) return true;
 		else return false;
 	}
 
 	bool operator>=(Fraction right) {
-		if (numerator_ >= right.numerator_ && denominator_ >= right.denominator_) return true;
+		if (abs(numerator_ / denominator_ - right.numerator_ / right.denominator_) >= eps) return true;
 		else return false;
 	}
 };
