@@ -1,4 +1,0 @@
-D:/Netology/Netology HM/HM/Lesson 10/Task 2/CMake_dynamic_library/out/build/x64-debug/CMakeFiles/Leaver.dir
-D:/Netology/Netology HM/HM/Lesson 10/Task 2/CMake_dynamic_library/out/build/x64-debug/CMakeFiles/CMake_dynamic_library.dir
-D:/Netology/Netology HM/HM/Lesson 10/Task 2/CMake_dynamic_library/out/build/x64-debug/CMakeFiles/edit_cache.dir
-D:/Netology/Netology HM/HM/Lesson 10/Task 2/CMake_dynamic_library/out/build/x64-debug/CMakeFiles/rebuild_cache.dir

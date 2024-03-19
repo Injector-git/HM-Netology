@@ -1,7 +1,0 @@
-# ninja log v5
-3	715	7323882804866318	CMakeFiles/Leaver.dir/Leaver.cpp.obj	6fac23f77cf34d91
-11	2009	7323882817782297	CMakeFiles/CMake_dynamic_library.dir/Leaver.cpp.obj	a2ed00b76d34a3ba
-7	2030	7323882818021641	CMakeFiles/CMake_dynamic_library.dir/CMake_dynamic_library.cpp.obj	da822e208c2b0d94
-716	14646	7323882943264417	Leaver.dll	1cd77f76f252c1c4
-716	14646	7323882943264417	Leaver.lib	1cd77f76f252c1c4
-14646	16272	7323882959621095	CMake_dynamic_library.exe	95c9f2a635af3379
