@@ -1,0 +1,2 @@
+#pragma code_page(65001)
+1 /* CREATEPROCESS_MANIFEST_RESOURCE_ID */ 24 /* RT_MANIFEST */ "D:/Netology/Netology HM/HM/Lesson 10/Task 2/CMake_dynamic_library/out/build/x64-debug/CMakeFiles/CMake_dynamic_library.dir/embed.manifest"
