@@ -5,72 +5,50 @@
 #define ground true
 #define air false
 
-int vehicle_count;//кол-во машин
-int action;//действие
+
 
 enum MenuType {
     choose_race_type,
     race_distance,
     choose_action,
-    drivers,//vehicle уже занято
+    registration,
     race_start,
     stop
 };
 
 class Vehicle { // ТС
 public:
+
+    int get_id() { return id; }
     std::string get_name() { return name; }
     bool get_type() { return type; }
     int get_speed() { return speed; }
     int get_dtbr() { return dtbr; }
     double  get_rest(int time) { return rest[time]; }
-    virtual double get_distance_reduction(int distance) { return distance_reduction; }
+    double get_distance_reduction() { return distance_reduction; }
 
+    Vehicle() {
+        id = 0;
+        name = "ТС";
+        type = ground;
+        speed = -1;
+        dtbr = -1;
+        distance_reduction = -1;
+    }
 protected:
+    int id;// !!!!!!!
     std::string name;
     bool type;// наземный/воздух
     int speed;
     int dtbr; // Driving time before rest(Время движения до отдыха)
-    double rest[3]{0,0,0}; // Отдых
-    double distance_reduction = 0; // Коэффициент сокращения расстояния
-};
-
-class Camel : public Vehicle{
-public:
-    Camel() {
-        name = "Верблюд";
-        type = ground;
-        speed = 10;
-        dtbr = 30;
-        rest[0]=5; rest[1] = 8; rest[2] = 8;
-    }
-};
-
-class SpeedCamel : public Vehicle {
-public:
-    SpeedCamel() {
-        name = "Верблюд-быстроход";
-        type = ground;
-        speed = 40;
-        dtbr = 10;
-        rest[0] = 5; rest[1] = 6,5; rest[2] = 8;
-    }
-};
-
-class Centaur : public Vehicle {
-public:
-    Centaur() {
-        name = "Кентавр";
-        type = ground;
-        speed = 15;
-        dtbr = 8;
-        rest[0] = 2; rest[1] = 2; rest[2] = 2;
-    }
+    double rest[3]; // Отдых
+    double distance_reduction;// Коэффициент сокращения расстояния
 };
 
 class AllTerrainBoots : public Vehicle {
 public:
     AllTerrainBoots() {
+        id = 1;
         name = "Ботинки-вездеходы";
         type = ground;
         speed = 6;
@@ -79,301 +57,166 @@ public:
     }
 };
 
-class CarpetPlane : public Vehicle {
+class Broom : public Vehicle {
 public:
-    CarpetPlane() {
-        name = "Ковёр-самолёт";
+    Broom() {
+        id = 2;
+        name = "Метла";
         type = air;
-        speed = 6;
+        speed = 20;
     }
-    double get_distance_reduction(int distance) override {
-        if (distance < 1000)  return distance_reduction = 1;
-        else if (distance < 5000) return distance_reduction = 0.03;
-        else if (distance < 10000)  return distance_reduction = 0.1;
-        else if (distance >= 10000)  return distance_reduction = 0.05;
+    Broom(int distance) : Broom() {
+        distance_reduction = (distance / 1000)/100.0;
     }
-    /*CarpetPlane(int distance) : CarpetPlane() {
-        if(distance < 1000) distance_reduction = 1;
-        else if (distance < 5000) distance_reduction = 0.03;
-        else if (distance < 10000) distance_reduction = 0.1;
-        else if (distance >= 10000) distance_reduction = 0.05;
-    }*/
+};
+
+class Camel : public Vehicle{
+public:
+    Camel() {
+        id = 3;
+        name = "Верблюд";
+        type = ground;
+        speed = 10;
+        dtbr = 30;
+        rest[0]=5; rest[1] = 8; rest[2] = 8;
+    }
+};
+
+class Centaur : public Vehicle {
+public:
+    Centaur() {
+        id = 4;
+        name = "Кентавр";
+        type = ground;
+        speed = 15;
+        dtbr = 8;
+        rest[0] = 2; rest[1] = 2; rest[2] = 2;
+    }
 };
 
 class Eagle : public Vehicle {
 public:
     Eagle() {
+        id = 5;
         name = "Орёл";
         type = air;
         speed = 8;
-        distance_reduction = 0, 06;
+        distance_reduction = 0.06;
     }
 };
 
-class Broom : public Vehicle {
+class SpeedCamel : public Vehicle {
 public:
-    Broom() {
-        name = "Метла";
-        type = air;
-        speed = 8;
+    SpeedCamel() {
+        id = 6;
+        name = "Верблюд-быстроход";
+        type = ground;
+        speed = 40;
+        dtbr = 10;
+        rest[0] = 5; rest[1] = 6.5; rest[2] = 8;
     }
-    double get_distance_reduction (int distance) override {
-        return distance_reduction = distance / 1000;
-    }
-    /*Broom(int distance) : Broom() {
-        distance_reduction = distance / 1000;
-    }*/
 };
 
-Vehicle which_vehicle(int number) {
-    switch (number)
-    {
-    case 1: return AllTerrainBoots();
-        break;
-    case 2: return Broom();
-        break;
-    case 3: return Camel();
-        break;
-    case 4: return Centaur();
-        break;
-    case 5: return Eagle();
-        break;
-    case 6: return SpeedCamel();
-        break;
-    case 7: return CarpetPlane();
-        break;
-    default:
-        //throw
-        break;
+class CarpetPlane : public Vehicle {
+public:
+    CarpetPlane() {
+        id = 7;
+        name = "Ковёр-самолёт";
+        type = air;
+        speed = 10;
     }
-}
+    CarpetPlane(int distance) : CarpetPlane() {
+        if(distance < 1000) distance_reduction = 0;
+        else if (distance < 5000) distance_reduction = 0.03;
+        else if (distance < 10000) distance_reduction = 0.1;
+        else if (distance >= 10000) distance_reduction = 0.05;
+    }
+};
 
-int set_race_type() {
-    std::cout << "1. Гонка для наземного транспорта" << std::endl;
-    std::cout << "2. Гонка для воздушного транспорта" << std::endl;
-    std::cout << "3. Гонка для наземного и воздушного транспорта" << std::endl;
+class Race {
+public:
+    int get_distance_length() { return distance_length; }
+    int get_action() { return action; }
+    int get_vehicle_count() { return vehicle_count; }
+    Vehicle* get_vehicle() { return vehicle; }
+    int get_race_type() { return race_type; }
 
-    std::cout << "Выберите тип гонки: "; std::cin >> action; std::cout << std::endl;
-    return action;
-}
+    //тип гонки
+    void set_race_type() {
+        std::cout << "1. Гонка для наземного транспорта" << std::endl;
+        std::cout << "2. Гонка для воздушного транспорта" << std::endl;
+        std::cout << "3. Гонка для наземного и воздушного транспорта" << std::endl;
 
-int set_distance_length() {
-    int distance_length;// Длинна пути 
-    std::cout << "Укажите длинну дистанции (должна быть положительной): "; std::cin >> distance_length; std::cout << std::endl;
-    return distance_length;
-}
+        std::cout << "Выберите тип гонки: "; std::cin >> race_type; std::cout << std::endl;
+    }
 
-int action_selection(int* vehicle) {
-    if (vehicle_count < 2)std::cout << "Должно быть зарегестрировано хотя бы 2 транспортных средства" << std::endl;
-    std::cout << "1. Зарегистрировать транспорт" << std::endl;
-    if (vehicle_count > 1) std::cout << "2. Начать гонку" << std::endl;
-    std::cout << "Выберите дествие: "; std::cin >> action; std::cout << std::endl;
+    //длинна трассы и инициализация ТС
+    void set_distance_length() {
+        std::cout << "Укажите длинну дистанции (должна быть положительной): "; std::cin >> distance_length; std::cout << std::endl;
+        /*
+        vehicle[Camel().get_id()] = Camel();
+        vehicle[SpeedCamel().get_id()] = SpeedCamel();
+        vehicle[Centaur().get_id()] = Centaur();
+        vehicle[AllTerrainBoots().get_id()] = AllTerrainBoots();
+        vehicle[CarpetPlane().get_id()] = CarpetPlane(distance_length);
+        vehicle[Eagle().get_id()] = Eagle();
+        vehicle[Broom().get_id()] = Broom(distance_length);
+        */
+        vehicle[0] = AllTerrainBoots();
+        vehicle[1] = Broom(distance_length);
+        vehicle[2] = Camel();
+        vehicle[3] = Centaur();
+        vehicle[4] = Eagle();
+        vehicle[5] = SpeedCamel();
+        vehicle[6] = CarpetPlane(distance_length);
+    }
 
-    if (action == 1) return drivers;
-    else if (action == 2) return race_start;
-    
-}
+    //
+    int action_selection() {
+        if (vehicle_count < 2)std::cout << "Должно быть зарегестрировано хотя бы 2 транспортных средства" << std::endl;
+        std::cout << "1. Зарегистрировать транспорт" << std::endl;
+        if (vehicle_count > 1) std::cout << "2. Начать гонку" << std::endl;
+        std::cout << "Выберите дествие: "; std::cin >> action; std::cout << std::endl;
 
-int* set_vehicle(int race, int distance_length,  int* vehicle) {
+        if (action == 1) return registration;
+        else if (action == 2) return race_start;
+    }
 
-    vehicle_count = 0;
-    int vehicle_type = 1;
-    bool reg = false;//Успех рег ТС *
+    //Ввод типов ТС 
+    void set_vehicle() {
 
-    while (vehicle_type != 0) {//Начало ввода типов ТС
+        action = 1;
+        bool reg = false;//Успех рег ТС
 
-        if (vehicle_count != 0) {//если ли ТС
-            if (race == 1 && (vehicle_type == 2 || vehicle_type == 5 || vehicle_type == 7)) {//проверка на заземленме
-                std::cout << "Попытка зарегистрировать неправильный тип транспортного средства" << std::endl;
-                vehicle_count--;//Неуспешная рег ТС
-                reg = false;
-            }
-            else if (race == 2 && (vehicle_type == 1 || vehicle_type == 3 || vehicle_type == 4 || vehicle_type == 6)) {//проверка на воздушность
-                std::cout << "Попытка зарегистрировать неправильный тип транспортного средства" << std::endl;
-                vehicle_count--;//Неуспешная рег ТС
-                reg = false;
-            }
+        while (action != 0) {//Начало ввода типов ТС
 
-            for (int i = 0; i < vehicle_count; i++)//проверка на повтор ТС
-                if (vehicle_type == vehicle[i]) {
-                    std::cout << which_vehicle(vehicle_type).get_name() << " Уже зарегистрирован" << std::endl;
+            if (reg == true) {//попытка регистрации
+                if (race_type == 1 && (action == 2 || action == 5 || action == 7)) {//проверка на заземленме
+                    std::cout << "Попытка зарегистрировать неправильный тип транспортного средства" << std::endl;
                     vehicle_count--;//Неуспешная рег ТС
                     reg = false;
-                    break;
                 }
-
-            if (reg == true) {
-                std::cout << which_vehicle(vehicle_type).get_name() << " Успешно зарегестрирован!" << std::endl;
-                vehicle[vehicle_count - 1] = vehicle_type;//Успешная рег ТС
-            }
-        }
-
-        switch (race)
-        {
-        case 1:
-            std::cout << "Гонка для наземного транспорта Растояние: ";
-            break;
-        case 2:
-            std::cout << "Гонка для воздушного транспорта Растояние: ";
-            break;
-        case 3:
-            std::cout << "Гонка для наземного и воздушного транспорта Растояние: ";
-            break;
-        default:
-            break;
-        }
-        std::cout << distance_length << std::endl;
-
-        if (vehicle_count != 0) {
-            std::cout << "Зарегистрированные транспортные средства: ";
-            for (int i = 0; i < vehicle_count; i++) std::cout << which_vehicle(vehicle[i]).get_name() << " "; //сделать , !!!!!!!
-            std::cout << std::endl;
-        }
-
-        for (int i = 1; i < sizeof(vehicle); i++)
-        {
-            std::cout << i << ". " << which_vehicle(i).get_name() << std::endl;
-        }
-        std::cout << "0. Закончить регистрацию" << std::endl;
-        std::cout << "Выберите транспорт или 0 для окончания процесса регистрации: "; std::cin >> vehicle_type; std::cout << std::endl;
-        if (vehicle_type != 0)
-        {
-            vehicle_count++;
-            reg = true;
-        }
-
-        system("cls");// ОТЧИСТКА КОНСОЛИ
-    }// Конец ввода ТС
-    return vehicle;
-
-}
-
-int time(Vehicle veh, int distance_lenght) {
-    double time = distance_lenght / veh.get_speed();
-    double rest_time;
-    int stop_counter = static_cast<int>(time) / veh.get_dtbr();
-
-    if (veh.get_type() == ground) {
-        for (int i = 0; i < stop_counter; i++) {
-            if (i < 3) rest_time = veh.get_rest(i);
-            else rest_time = veh.get_rest(2);
-            time += rest_time;
-        }
-        return time;
-    }
-    else {
-        time -= time * veh.get_distance_reduction(distance_lenght);
-        return time;
-    }
-
-}
-
-int  race(int* vehicle, int distance_lenght) {
-    Vehicle veh;
-    std::cout << "Результаты гонки:" << std::endl;
-    for (int i = 0; i < vehicle_count; i++) {
-        Vehicle veh = which_vehicle(vehicle[i]);
-        std::cout << veh.get_name() << "." << " Время: " << time(veh, distance_lenght) << std::endl;
-    }
-    std::cout << std::endl;
-
-    std::cout << "1. Провести еще одну гонку" << std::endl;
-    std::cout << "2. Выйти" << std::endl;
-    std::cout << "Выберите дествие: "; std::cin >> action; std::cout << std::endl;
-
-    vehicle_count=0;//сброс кол-ва ТС
-    for (int i = 0; i < sizeof(vehicle); i++) {//сброс масства ТС
-        vehicle[i] = 0;
-    }
-    if (action == 1) return choose_race_type;
-    else if (action == 2) return stop;
-} 
-
-int main()
-{
-    SetConsoleCP(1251);
-    SetConsoleOutputCP(1251);//для корректной работы кириллицы со стрингом
-
-
-    std::cout << "Добро пожаловать в гоночный симулятор" << std::endl;
-
-    //Vehicle* drivers = new Vehicle[7];//7 ТС
-    // 
-    //переменные для инициализации ТС
-    int vehicle[7];//7  ТС
-    int race_type;// Тип гонки
-    int distance_length;// Длинна пути 
-    int menu= choose_race_type;//какое меню включать
-
-    /* инициализация всех ТС
-    AllTerrainBoots boots;
-    Broom broom;
-    Camel camel;
-    Centaur cent;
-    Eagle eagle;
-    SpeedCamel scamel;
-    CarpetPlane carpet;*/
-
-    do {
-        switch (menu)
-        {
-            case choose_race_type: //Выбрать тип гонки
-                race_type = set_race_type();
-                menu = race_distance;
-                break;
-
-            case race_distance: //Установить длинну трассы
-                distance_length = set_distance_length();
-                menu = choose_action;
-                break;
-
-            case choose_action: //Выбор действия
-                menu = action_selection(vehicle);
-                break;
-
-            case drivers: //Ввод типов ТС 
-                set_vehicle(race_type, distance_length, vehicle);//(не нужно приcваивать массив так как он с ним и работает)
-                menu = choose_action;
-                break;
-
-            case race_start: //Ввод типов ТС 
-                menu = race(vehicle, distance_length);
-                break;
-        default:
-            break;
-        }
-
-        system("cls");// ОТЧИСТКА КОНСОЛИ
-
-       /*while (vehicle != 0) {//Начало ввода типов ТС
-
-            if (drivers_count != 0) {//если ли ТС
-                if (race == 1 && (vehicle == 2 || vehicle == 5 || vehicle == 7)) {//проверка на заземленме
+                else if (race_type == 2 && (action == 1 || action == 3 || action == 4 || action == 6)) {//проверка на воздушность
                     std::cout << "Попытка зарегистрировать неправильный тип транспортного средства" << std::endl;
-                    drivers_count--;//Неуспешная рег ТС
-                    reg = false;
-                }
-                else if (race == 2 && (vehicle == 1 || vehicle == 3 || vehicle == 4 || vehicle == 6)) {//проверка на воздушность
-                    std::cout << "Попытка зарегистрировать неправильный тип транспортного средства" << std::endl;
-                    drivers_count--;//Неуспешная рег ТС
+                    vehicle_count--;//Неуспешная рег ТС
                     reg = false;
                 }
 
-                for (int i = 0; i < drivers_count; i++)//проверка на повтор ТС
-                    if (vehicle == drivers[i]) {
-                        std::cout << which_vehicle(vehicle) << " Уже зарегистрирован" << std::endl;
-                        drivers_count--;//Неуспешная рег ТС
+                for (int i = 0; i < vehicle_count; i++)//проверка на повтор ТС
+                    if (action-1 == drivers[i]) {
+                        std::cout << vehicle[drivers[i]].get_name() << " Уже зарегистрирован" << std::endl;
+                        vehicle_count--;//Неуспешная рег ТС
                         reg = false;
                         break;
                     }
 
                 if (reg == true) {
-                    std::cout << which_vehicle(vehicle) << " Успешно зарегестрирован!" << std::endl;
-                    drivers[drivers_count - 1] = vehicle;//Успешная рег ТС
+                    std::cout << vehicle[action-1].get_name() << " Успешно зарегестрирован!" << std::endl;
+                    drivers[vehicle_count - 1] = action-1;//Успешная рег ТС
                 }
             }
-                        
-            switch (race)
+
+            switch (race_type)
             {
             case 1:
                 std::cout << "Гонка для наземного транспорта Растояние: ";
@@ -389,26 +232,177 @@ int main()
             }
             std::cout << distance_length << std::endl;
 
-            if (drivers_count != 0) {
+            if (vehicle_count > 0) {
                 std::cout << "Зарегистрированные транспортные средства: ";
-                for (int i = 0; i < drivers_count; i++) std::cout << which_vehicle(drivers[i]) << " "; //сделать , 
+                for (int i = 0; i < vehicle_count; i++) {
+                    std::cout << vehicle[drivers[i]].get_name();
+                    if (vehicle_count > 1 && i != vehicle_count-1) std::cout << ", ";
+                }
                 std::cout << std::endl;
             }
 
-            std::cout << "1. " << boots.get_name() << std::endl;//ground
-            std::cout << "2. " << broom.get_name() << std::endl;//air
-            std::cout << "3. " << camel.get_name() << std::endl;//ground
-            std::cout << "4. " << cent.get_name() << std::endl;//ground
-            std::cout << "5. " << eagle.get_name() << std::endl;//air
-            std::cout << "6. " << scamel.get_name() << std::endl;//ground
-            std::cout << "7. " << carpet.get_name() << std::endl;//air
-            std::cout << "0.  Закончить регистрацию" << std::endl;
-            std::cout << "Выберите транспорт или 0 для окончания процесса регистрации: "; std::cin >> vehicle; std::cout << std::endl;
-            drivers_count++;
-            reg = true;
+            for (int i = 0; i < vehicle_type; i++)// Отрисовка типов ТС
+            {
+                std::cout << i+1 << ". " << vehicle[i].get_name() << std::endl;
+            }
+
+            std::cout << "0. Закончить регистрацию" << std::endl;
+            std::cout << "Выберите транспорт или 0 для окончания процесса регистрации: "; std::cin >> action; std::cout << std::endl;
+            if (action != 0)
+            {
+                vehicle_count++;
+                reg = true;
+            }
+
             system("cls");// ОТЧИСТКА КОНСОЛИ
-        }// Конец ввода тс */ 
-        
+        }// Конец ввода ТС
+    }
+
+    //Гонка
+    int race() {
+        std::cout << "Результаты гонки:" << std::endl;
+
+        double* results = new double[vehicle_type];//Результаты на сортировку
+
+        for (int i = 0; i < vehicle_count; i++) {
+            results[i] = time(vehicle[drivers[i]]);//Подсчет всех ТС
+        }
+
+        int conter = vehicle_count;
+        while (conter--)//Сортировка результатов
+        {
+            bool swapped = false;
+
+            for (int i = 0; i < conter; i++)
+            {
+                if (results[i] > results[i + 1])
+                {
+                    double swap = results[i];
+                    results[i] = results[i + 1];
+                    results[i + 1] = swap;
+                    //
+                    int swap_d = drivers[i];
+                    drivers[i] = drivers[i + 1];
+                    drivers[i + 1] = swap_d;
+
+                    swapped = true;
+                }
+            }
+
+            if (swapped == false)
+                break;
+        }
+
+        for (int i = 0; i < vehicle_count; i++){
+            std::cout << vehicle[drivers[i]].get_name() << "." << " Время: " << results[i] << std::endl;;
+        }
+
+        delete[] results;
+        std::cout << std::endl;
+
+        int action;
+        std::cout << "1. Провести еще одну гонку" << std::endl;
+        std::cout << "2. Выйти" << std::endl;
+        std::cout << "Выберите дествие: "; std::cin >> action; std::cout << std::endl;
+
+        vehicle_count = 0;//сброс кол-ва ТС
+        for (int i = 0; i < vehicle_type; i++) {//сброс массива drivers
+            drivers[i] = 0;
+        }
+        if (action == 1) return choose_race_type;
+        else if (action == 2) return stop;
+    }
+
+    Race() {
+        distance_length = -1;// Длинна пути 
+        action = -1;//действие
+        vehicle_count = 0;//кол-во машин
+        vehicle = new Vehicle[vehicle_type];//Объявление массива всех ТС(Требуется т.к. объявленме воздушных ТС требует инициализированеу длину которой нет изначально!!!!!!!)
+        drivers = new int[vehicle_type];//Объявление массива всех участников
+        race_type = -1;// Тип гонки
+    }
+
+    ~Race() {
+        delete[] vehicle;
+        delete[] drivers;
+    }
+
+private:
+    //переменные для инициализации ТС
+    int distance_length;// Длинна пути 
+    int action ;//действие
+    int vehicle_count ;//кол-во машин
+    const int  vehicle_type = 7;//Кол-во типов ТС
+    Vehicle* vehicle;// ТС
+    int* drivers;//Участнки гонки
+    int race_type;// Тип гонки
+
+    double time(Vehicle veh) {//просчет времени
+        double time;
+        if (veh.get_type() == ground) {
+            time = static_cast<double>(distance_length) / veh.get_speed();
+            
+            int stop_counter = static_cast<int>(time) / veh.get_dtbr();//Кол-во остановок
+            if(static_cast<int>(time) % veh.get_dtbr()==0) stop_counter--;
+            for (int i = 0; stop_counter > 0; i++) {
+                if (i < 3) { time += veh.get_rest(i); stop_counter--; }
+                else { time += veh.get_rest(2) * stop_counter; stop_counter = 0; }
+            }
+            return time;
+        }
+        else {
+            return time = static_cast<double>(distance_length) * (1-veh.get_distance_reduction()) / veh.get_speed();
+
+        }
+    }
+};
+
+
+
+int main()
+{
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);//для корректной работы кириллицы со стрингом
+
+    std::cout << "Добро пожаловать в гоночный симулятор" << std::endl;
+
+    int menu = choose_race_type;//какое меню включать
+
+    Race race;
+
+    do {
+        switch (menu)
+        {
+
+        case choose_race_type: //Выбрать тип гонки
+
+            race.set_race_type();
+            menu = race_distance;
+            break;
+
+        case race_distance: //Установить длинну трассы
+            race.set_distance_length();
+            menu = choose_action;
+            break;
+
+        case choose_action: //Выбор действия
+            menu = race.action_selection();
+            break;
+
+        case registration: //Ввод типов ТС 
+            race.set_vehicle();
+            menu = choose_action;
+            break;
+
+        case race_start: //Гонка
+            menu = race.race();
+            break;
+        default:
+            break;
+        }
+
+        system("cls");// ОТЧИСТКА КОНСОЛИ
+
     } while (menu != static_cast<int>(stop));
     return 0;
 }
