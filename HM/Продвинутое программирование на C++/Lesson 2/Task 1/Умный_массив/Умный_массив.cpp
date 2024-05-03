@@ -1,10 +1,15 @@
 ﻿#include <iostream>
+#include <exception>
 
-class Smart_array {
+class Smart_array{
 public:
+
+	Smart_array(const Smart_array&) = delete;
+	Smart_array& operator=(const Smart_array&) = delete;
+
 	Smart_array(int size) {
 		this->size = size;
-		arr = new int(size);
+		arr = new int[size];
 	}
 
 	~Smart_array() {
@@ -17,18 +22,22 @@ public:
 			i++;
 		}
 		else
-			throw ("Количество элементов больше количества элементов, на которую выделена память");
+			throw exp;
 	}
 	
-	char get_element(int a) {
-		if (a >= 0 && a <= size)
-		return arr[a];
-		else throw("Неккоректный идекс");
+	int get_element(int a) {
+		if (a >= 0 && a < size)
+			return arr[a];
+		else throw exp;
 	}
+
+
+
 private:
 	int* arr;
 	int size;
 	int i = 0;
+	std::exception exp;
 };
 
 int main()
@@ -40,6 +49,7 @@ int main()
 		arr.add_element(4);
 		arr.add_element(155);
 		arr.add_element(14);
+		arr.add_element(15);
 		arr.add_element(15);
 		std::cout << arr.get_element(1) << std::endl;
 	}
