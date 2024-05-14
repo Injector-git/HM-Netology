@@ -21,14 +21,13 @@ public:
 			arr[i] = a;
 			i++;
 		}
-		else
-			throw exp;
+		else throw std::runtime_error("Array overflow error");
 	}
 	
 	int get_element(int a) {
 		if (a >= 0 && a < size)
 			return arr[a];
-		else throw exp;
+		else throw std::runtime_error("Wrong index");
 	}
 
 
@@ -37,7 +36,6 @@ private:
 	int* arr;
 	int size;
 	int i = 0;
-	std::exception exp;
 };
 
 int main()

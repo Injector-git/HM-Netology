@@ -17,46 +17,45 @@ public:
 			arr[i] = a;
 			i++;
 		}
-		else
-			throw exp;
+		else throw std::runtime_error("Array overflow error");
 	}
 	
 	int get_element(int a) {
 		if (a >= 0 && a < size)
 			return arr[a];
-		else throw exp;
+		else throw std::runtime_error("Wrong index");
 	}
 
 	Smart_array& operator=(const Smart_array& right) {
-
-		if (arr == right.arr) return right;
-		~Smart_array;
-		Smart_array new_arr(right.size);
+		//if (this == right) return *this;
+		delete[] this->arr;
+		this->arr = new int[right.size];
+		this->size = right.size;
+		this->i = right.i;
 		for (int i = 0; i < right.size; i++) {
-			new_arr[i] = right.arr[i];
+			this->arr[i] = right.arr[i];
 		}
-		return new_arr;
+		return *this;
 	}
 
 	Smart_array(const Smart_array& right) { //Конструктор копирования
-
-		Smart_array new_arr(right.size);
+		this->arr = new int[right.size];
+		this->size = right.size;
+		this->i = right.i;
 		for (int i = 0; i < right.size; i++) {
-			new_arr[i] = right.arr[i];
+			this->arr[i] = right.arr[i];
 		}
-		return new_arr;
 	}
 
 private:
 	int* arr;
 	int size;
 	int i = 0;
-	std::exception exp;
 };
 
 int main()
 {
-
+	
 	Smart_array arr(5);
 	arr.add_element(1);
 	arr.add_element(4);
@@ -70,4 +69,6 @@ int main()
 
 	arr = new_array;
 
+	Smart_array arr2(arr);
+	arr = arr;
 }
