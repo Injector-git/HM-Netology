@@ -27,7 +27,7 @@ public:
 	}
 
 	Smart_array& operator=(const Smart_array& right) {
-		//if (this == right) return *this;
+		if (this == &right) return *this;
 		delete[] this->arr;
 		this->arr = new int[right.size];
 		this->size = right.size;
