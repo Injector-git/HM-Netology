@@ -7,35 +7,37 @@ class Big_integer {
 public:
 	Big_integer(std::string number) {
 		for (int i = 0; i < number.size(); i++) {
-			vec.push_back(static_cast<int>(number[i]) - 48);
+			vec.push_back(static_cast<int>(number[i]) - '0');
 		}
 	};
 	Big_integer(){}
 
-	/*Big_integer(Big_integer&& other) {// конструктор перемещения
+	Big_integer(const Big_integer& other){ // конструктор копирования
 		vec = other.vec;
-		other.vec.clear();
-	}*/
-
-	friend std::ostream& operator<<(std::ostream& left, Big_integer right) {
-		for (int i = 0; i < right.vec.size(); i++)
-		{
-			left << right.vec[i];
-		}
-		return left;
 	}
 
-	Big_integer& operator=(const Big_integer& right) // оператор копирующего присваивания
+	Big_integer(Big_integer&& other) noexcept{ // конструктор перемещения
+		vec = std::move(other.vec);
+	}
+
+	Big_integer& operator=(Big_integer&& other) noexcept // оператор перемещающего присваивания
+	{
+		std::vector<int> tmp = std::move(vec);
+		vec = std::move(other.vec);
+		other.vec = std::move(tmp);
+		return *this;
+	}
+
+	const Big_integer& operator=(const Big_integer& right) // оператор копирующего присваивания
 	{
 		return *this = Big_integer(right);
 	}
 
-	Big_integer& operator+(Big_integer& right) {
-
+	Big_integer operator+(Big_integer& right) {
 		Big_integer sum;
-		std::vector<int>::reverse_iterator iterator_left= vec.rbegin();
+		std::vector<int>::reverse_iterator iterator_left = vec.rbegin();
 		std::vector<int>::reverse_iterator iterator_right = right.vec.rbegin();
-		int ostatok=0,term1 = *iterator_left,term2 = *iterator_right,digit;
+		int ostatok = 0, term1 = *iterator_left, term2 = *iterator_right, digit;
 
 		while (ostatok != 0 || term1 != 0 || term2 != 0) {
 			digit = (term1 + term2 + ostatok);
@@ -49,7 +51,7 @@ public:
 		return sum;
 	}
 
-	Big_integer& operator*(int factor) {
+	Big_integer operator*(int factor) {
 		Big_integer res;
 		std::vector<int>::reverse_iterator iterator = vec.rbegin();
 		int ostatok=0, mult, digit;
@@ -64,6 +66,15 @@ public:
 		return res;
 	}
 
+	friend std::ostream& operator<<(std::ostream& left, Big_integer& right) {
+		std::vector<int>::reverse_iterator iterator = right.vec.rbegin();
+		do {
+			left << *iterator;
+		} while (++iterator != right.vec.rend());
+
+		return left;
+	}
+
 private:
 	std::vector<int> vec;
 };
@@ -73,5 +84,5 @@ int main()
 	auto number1 = Big_integer("924575");
 	auto number2 = Big_integer("78524");
 	auto result = number1 + number2;
-	std::cout << result; // 193099
+	std::cout << result; 
 }
