@@ -21,7 +21,7 @@ public:
             throw std::runtime_error("Не удалось открыть файл: " + filename);
         }
 
-        //parse();
+        parse();
     }
 
     void trim( std::string& source) {// удаление пробелов и табуляции с начала и конца строки.
@@ -94,9 +94,8 @@ public:
         }
         catch (...) { std::cout << "Такой cекции нет" << std::endl; }
 
-        
-
         return value[section][val];
+
     }
 
     
