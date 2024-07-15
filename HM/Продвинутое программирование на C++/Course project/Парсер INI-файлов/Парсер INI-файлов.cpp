@@ -5,9 +5,7 @@
 #include <map>
 #include <Windows.h>//для корректной работы кириллицы со стрингом
 
-void print_V_console( std::string in, std::ifstream& asd) {
-    std::cout << "stroka:" << asd.tellg() << "\t" << in << std::endl;
-}
+
 
 class ini_parser {
 
@@ -34,39 +32,41 @@ public:
 
         while (true) {//Обход файла
             if (std::getline(file, in).eof()) { break; } //переход на следующую строку и проверка на конец файла
-
+            stroka_counter++;
             trim(in);
-            print_V_console(in, file);
+            std::cout << "stroka:" << stroka_counter << "\t" << in << std::endl;
 
             if (in[0] == ';') {
                 continue;
             }
 
             else if (in[0] == '[') {/// Проверка коррекции [Section?]
-                
+
                 std::string string_template{ "[Section?]" };// шаблон [Section?]
                 for (int i = 0; i < string_template.size(); i++) {
                     if (i == 8) { section_number = in[i]; i++; }//проскакивание числа и запись секции
-                    if (in[i] != string_template[i]) { throw  std::runtime_error("Ошибка чтения файла "); }
+                    if (in[i] != string_template[i]) { throw  std::runtime_error("Ошибка чтения файла строка: " + std::to_string(stroka_counter)); }
                 }
-                // if((in[12] || in[13]) == ';') { throw  std::runtime_error("Кометарий после Section строка: "); } //отсутствие комеетария после Section
             }
 
             else if (in[0] > 'A' && in[0] < 'z') {
+                value_name.clear();//отчистка имени переменной
+                value_val.clear();//отчистка значения переменной
                 bool equals_value = false;//проверка наличия '='
-                for (int i = 0; i < in.size(); i++) {
+                for (int i = 0; i < in.size() && in[i] != ';'; i++) {
                     if (in[i] == '=') { equals_value = true; i++; }
-                    if (equals_value == false) { value_name.push_back(in[i]); }//запись имени переменной
+                    if (!equals_value) { value_name.push_back(in[i]); }//запись имени переменной
                     else value_val.push_back(in[i]);//запись значения переменной
                 }
-                if (equals_value == false) { throw  std::runtime_error("отсутствие '=' в переменной"); } //отсутствие '=' в переменной
+                if (!equals_value) { throw  std::runtime_error("отсутствие '=' в переменной"); } //отсутствие '=' в переменной
 
-                if (section_number > value.capacity()) value.push_back({ value_name, value_val }); //запись переменной в вектор
-                else value[section_number] = { value_name, value_val };
+                value["Section" + section_number + '.' + value_name] = value_val; //запись переменной
+                //value.insert({ "Section" + section_number + '.' + value_name, value_val}); 
 
             }
 
-            else if (in[0] == '\n' || in[0] == '\r' || in[0] == '\t') { throw  std::runtime_error("Ошибка чтения файла "); }
+            else if (in[0] == '\n' || in[0] == '\r' || in[0] == '\t') { throw  std::runtime_error("Ошибка чтения файла строка: " + std::to_string(stroka_counter));
+            }
             
         }//Обход файла
     }
@@ -90,17 +90,20 @@ public:
 
     std::string get_value_template(int section, std::string val) {
 
-        //try {
-        //    value[section]
-       // }
-       // catch (...) { std::cout << "Такой cекции нет" << std::endl; }
+        std::string answer = "Section" + std::to_string(section) + '.' + val;
 
-        auto test = value[section].find(val);
-        std::string answer = test->second;
+        std::cout << "map------------------------- " << std::endl;
+        for (const auto& elem : value)
+            std::cout << "| " << elem.first << ": " << elem.second << std::endl;
 
-        std::cout << "answer=" << answer << std::endl;
+        try {
+            value.at(answer);
+        }
+        catch (...) { throw  std::runtime_error("Элемент отсутствует"); };
+        
+        if (value[answer] == "") { throw  std::runtime_error("Значение переменной отсутствует"); }
 
-        return answer;
+        return value[answer];
 
     }
 
@@ -111,10 +114,10 @@ public:
 
 private:
     std::ifstream file;
-    std::vector<std::map<std::string, std::string>> value;//массив из карт файла 
-    int section_number = 0;//номер секции 
+    std::map<std::string, std::string> value;//массив файла 
+    std::string section_number;//номер секции 
     std::string value_name, value_val;//имя и значение переменной 
-
+    int stroka_counter = 0; //cчетчик строк
 };
 
 
@@ -126,7 +129,7 @@ int main()
 
     try {
         ini_parser parser("test.ini");  //filename
-        auto value = parser.get_value<int>(1, "var2"); //section.value
+        auto value = parser.get_value<std::string>(4, "Mode"); //section.value
         std::cout << value;
     }
     catch (std::runtime_error& err) { std::cout << err.what() << std::endl; }
