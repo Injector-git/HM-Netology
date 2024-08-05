@@ -109,22 +109,103 @@ int main() {
 
 		s.setConnection(move(connection));
 
-
-
 		s.mapClass<Publisher>("Publisher");
 		s.mapClass<Book>("Book");
 		s.mapClass<Stock>("Stock");
 		s.mapClass<Shop>("Shop");
 		s.mapClass<Sale>("Sale");
 
-		//s.dropTables();
+		s.dropTables();
 		s.createTables();
+
+
 
 		Wt::Dbo::Transaction tran{ s };
 
-		tran.commit();
+		//PUBLISHER
+		std::unique_ptr<Publisher> Joe = std::make_unique<Publisher>();
+		Joe->name = "Joe";
+
+		std::unique_ptr<Publisher> Roggan{ new Publisher() };
+		Roggan->name = "Roggan";
+
+		std::unique_ptr<Publisher> Itan{ new Publisher() };
+		Itan->name = "Itan";
+
+		Wt::Dbo::ptr<Publisher> Joe_Ptr = s.add<Publisher>(std::move(Joe));
+		Wt::Dbo::ptr<Publisher> Roggan_Ptr = s.add(std::move(Roggan));
+		Wt::Dbo::ptr<Publisher> Itan_Ptr = s.add(std::move(Itan));
+
+
+		//BOOK
+		Wt::Dbo::ptr<Book> book1_ptr = s.add(std::unique_ptr<Book>{new Book{ "Alphabet" }, });
+		Joe_Ptr.modify()->book.insert(book1_ptr); // or book_ptr.modify()->pub = Joe_Ptr;
 		
+		Wt::Dbo::ptr<Book> book2_ptr = s.add(std::unique_ptr<Book>{new Book{ "Knives" }, });
+		Joe_Ptr.modify()->book.insert(book2_ptr);
+
+		Wt::Dbo::ptr<Book> book3_ptr = s.add(std::unique_ptr<Book>{new Book{ "Thumbelina" }, });
+		Roggan_Ptr.modify()->book.insert(book3_ptr);
+
+		Wt::Dbo::ptr<Book> book4_ptr = s.add(std::unique_ptr<Book>{new Book{ "1984" }, });
+		Itan_Ptr.modify()->book.insert(book4_ptr);
+
+
+		//SHOP
+		std::unique_ptr<Shop> shop1 = std::make_unique<Shop>();
+		shop1->name = "shop1";
+
+		std::unique_ptr<Shop> shop2 = std::make_unique<Shop>();
+		shop2->name = "shop2";
+
+		std::unique_ptr<Shop> shop3 = std::make_unique<Shop>();
+		shop3->name = "shop3";
+
+		Wt::Dbo::ptr<Shop> shop1_Ptr = s.add(std::move(shop1));
+		Wt::Dbo::ptr<Shop> shop2_Ptr = s.add(std::move(shop2));
+		Wt::Dbo::ptr<Shop> shop3_Ptr = s.add(std::move(shop3));
+
+
+		//STOCK
+		Wt::Dbo::ptr<Stock> stock1_ptr = s.add(std::unique_ptr<Stock>{new Stock{ 3 }, });
+		book1_ptr.modify()->stock.insert(stock1_ptr);
+		shop1_Ptr.modify()->stock.insert(stock1_ptr);
+
+		Wt::Dbo::ptr<Stock> stock2_ptr = s.add(std::unique_ptr<Stock>{new Stock{ 6 }, });
+		book1_ptr.modify()->stock.insert(stock2_ptr);
+		shop2_Ptr.modify()->stock.insert(stock2_ptr);
+
+		Wt::Dbo::ptr<Stock> stock3_ptr = s.add(std::unique_ptr<Stock>{new Stock{ 1 }, });
+		book2_ptr.modify()->stock.insert(stock3_ptr);
+		shop2_Ptr.modify()->stock.insert(stock3_ptr);
+
+		Wt::Dbo::ptr<Stock> stock4_ptr = s.add(std::unique_ptr<Stock>{new Stock{ 6 }, });
+		book3_ptr.modify()->stock.insert(stock4_ptr);
+		shop3_Ptr.modify()->stock.insert(stock4_ptr);
+
+		Wt::Dbo::ptr<Stock> stock5_ptr = s.add(std::unique_ptr<Stock>{new Stock{ 2 }, });
+		book4_ptr.modify()->stock.insert(stock5_ptr);
+		shop3_Ptr.modify()->stock.insert(stock5_ptr);
+
+		//Запрос
+		std::string autor;
+		std::cout << "Введите издателя: ";
+		std::cin >> autor;
+		std::cout << std::endl;
+
+		Wt::Dbo::collection<Wt::Dbo::ptr<Publisher>> id_pub = s.find<Publisher>().where("name = " + autor);
+
+		Wt::Dbo::collection<Wt::Dbo::ptr<Book>> id_book = s.find<Book>().where("Publisher_id = " + id_pub);
+
+		Wt::Dbo::collection<Wt::Dbo::ptr<Stock>> request = s.find<Stock>().where("Book_id = " + id_book);
+
+		for (Wt::Dbo::ptr<Stock> p : request) {
+			std::cout << p->shop << " ";
+		}
+
+		tran.commit();
 	}
+
 	catch (const std::exception& e) {
 		(std::cout << "Error: " << e.what());
 	}
