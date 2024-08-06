@@ -193,17 +193,23 @@ int main() {
 		std::cin >> autor;
 		std::cout << std::endl;
 
-		Wt::Dbo::collection<Wt::Dbo::ptr<Publisher>> id_pub = s.find<Publisher>().where("name = " + autor);
-
-		Wt::Dbo::collection<Wt::Dbo::ptr<Book>> id_book = s.find<Book>().where("Publisher_id = " + id_pub);
-
-		Wt::Dbo::collection<Wt::Dbo::ptr<Stock>> request = s.find<Stock>().where("Book_id = " + id_book);
-
-		for (Wt::Dbo::ptr<Stock> p : request) {
-			std::cout << p->shop << " ";
-		}
 
 		tran.commit();
+
+		Wt::Dbo::Transaction tran2{ s };
+
+		Wt::Dbo::ptr<Publisher> deal_publisher = s.find<Publisher>().where("name = ?").bind(autor);
+
+		Wt::Dbo::ptr<Book> id_book = s.find<Book>().where("Publisher_id = " + std::to_string(deal_publisher.id()));
+
+		Wt::Dbo::collection<Wt::Dbo::ptr<Stock>> request = s.find<Stock>().where("Book_id = " + std::to_string(id_book.id()));
+
+		for (Wt::Dbo::ptr<Stock> r : request) {
+			std::cout << r->shop << " ";
+		}
+
+		tran2.commit();
+
 	}
 
 	catch (const std::exception& e) {
