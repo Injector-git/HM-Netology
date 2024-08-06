@@ -18,7 +18,7 @@ public:
 	template<typename T>
 	void persist(T& pub) {
 
-		Wt::Dbo::hasMany(pub, book, Wt::Dbo::ManyToOne, "Publisher");
+		Wt::Dbo::hasMany(pub, book, Wt::Dbo::ManyToOne, "publisher");
 		Wt::Dbo::field(pub, name, "name");
 
 	}
@@ -33,8 +33,8 @@ class Book {public:
 	template<typename T>
 	void persist(T& book) {
 
-		Wt::Dbo::belongsTo(book, pub, "Publisher");
-		Wt::Dbo::hasMany(book, stock, Wt::Dbo::ManyToOne, "Book");
+		Wt::Dbo::belongsTo(book, pub, "publisher");
+		Wt::Dbo::hasMany(book, stock, Wt::Dbo::ManyToOne, "book");
 		Wt::Dbo::field(book, title, "title");
 
 	}
@@ -51,7 +51,7 @@ public:
 	template<typename T>
 	void persist(T& stock) {
 
-		Wt::Dbo::belongsTo(stock, book, "Book");
+		Wt::Dbo::belongsTo(stock, book, "book");
 		Wt::Dbo::belongsTo(stock, shop, "Shop");
 		Wt::Dbo::hasMany(stock, sale, Wt::Dbo::ManyToOne, "Stock");
 		Wt::Dbo::field(stock, count, "count");
@@ -109,8 +109,8 @@ int main() {
 
 		s.setConnection(move(connection));
 
-		s.mapClass<Publisher>("Publisher");
-		s.mapClass<Book>("Book");
+		s.mapClass<Publisher>("publisher");
+		s.mapClass<Book>("book");
 		s.mapClass<Stock>("Stock");
 		s.mapClass<Shop>("Shop");
 		s.mapClass<Sale>("Sale");
@@ -200,13 +200,15 @@ int main() {
 
 		Wt::Dbo::ptr<Publisher> deal_publisher = s.find<Publisher>().where("name = ?").bind(autor);
 
-		Wt::Dbo::ptr<Book> id_book = s.find<Book>().where("Publisher_id = " + std::to_string(deal_publisher.id()));
+		Wt::Dbo::collection < Wt::Dbo::ptr<Book>> id_book = s.find<Book>().where("publisher_id = " + std::to_string(deal_publisher.id()));
 
-		Wt::Dbo::collection<Wt::Dbo::ptr<Stock>> request = s.find<Stock>().where("Book_id = " + std::to_string(id_book.id()));
-
-		for (Wt::Dbo::ptr<Stock> r : request) {
-			std::cout << r->shop << " ";
+		for (auto book : id_book) {
+			Wt::Dbo::collection < Wt::Dbo::ptr<Stock>> id_stock = s.find<Stock>().where("book_id = ?").bind(book);
+			for (auto shop : id_stock) {
+				std::cout << "shop = " << shop->shop.id() << std::endl;
+			}
 		}
+			
 
 		tran2.commit();
 
