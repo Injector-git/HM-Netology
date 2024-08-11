@@ -13,7 +13,6 @@
 template<typename Iterator, typename T>
 T parallel_forEach(Iterator first, Iterator last, T init)
 {
-
 	unsigned long const length = std::distance(first, last);
 	unsigned long const max_chunk_size = 25;
 	if (length <= max_chunk_size)

@@ -18,8 +18,6 @@ void mySort(std::vector<int> vec, int i, std::promise<int*> pr) {
 
 int main()
 {
-    int asd[3];
-    int sdf[3];
     std::vector<int> vec{43, 5, 8, 5, 342, 5, 34, 6, 123, 52, 3, 123, 20};
 
 
