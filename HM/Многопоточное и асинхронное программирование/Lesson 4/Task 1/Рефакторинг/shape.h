@@ -49,6 +49,12 @@ class Shape
 {
 public:
 	Shape();
+	void shift(int m, int n, int k);
+	void shift(int m, int n);
+	void scaleX(int scale);
+	void scaleY(int scale);
+	void scaleZ(int scale);
+	void scale(int scale);
 protected:
 	Coord a, b, c, d, e, f, g, h;
 	double height;
@@ -100,8 +106,14 @@ public:
 		b = _b;
 		radius = _radius;
 		height = _height;
-		square = M_PI * radius * radius;
+		//square = M_PI * radius * radius;
 	}
+	void shift(int m, int n, int k) = delete;
+	void shift(int m, int n) = delete;
+	void scaleX(int scale) = delete;
+	void scaleY(int scale) = delete;
+	void scaleZ(int scale) = delete;
+	void scale(int scale) = delete;
 };
 
 class Cylinder : public Shape {
@@ -115,4 +127,10 @@ public:
 		volume = M_PI *radius * radius * height;
 	}
 
+	void shift(int m, int n, int k) = delete;
+	void shift(int m, int n) = delete;
+	void scaleX(int scale) = delete;
+	void scaleY(int scale) = delete;
+	void scaleZ(int scale) = delete;
+	void scale(int scale) = delete;
 };

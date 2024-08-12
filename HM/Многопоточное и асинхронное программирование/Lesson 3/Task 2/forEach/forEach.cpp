@@ -11,7 +11,7 @@
 
 
 template<typename Iterator, typename T>
-T parallel_forEach(Iterator first, Iterator last, T init)
+void parallel_forEach(Iterator first, Iterator last, T init)
 {
 	unsigned long const length = std::distance(first, last);
 	unsigned long const max_chunk_size = 25;
@@ -22,15 +22,12 @@ T parallel_forEach(Iterator first, Iterator last, T init)
 		for (; F != L; ++F) {
 			init(*F);
 		}
-		return init;
 	}
 	else
 	{
-		Iterator mid_point = first;
-		std::advance(mid_point, length / 2);
-		std::future<T> first_half_result = std::async(parallel_forEach<Iterator, T>, first, mid_point, init);
-		T second_half_result = parallel_forEach(mid_point, last, init);
-		return init;
+		Iterator const mid_point = first + length / 2;
+		std::future<void> first_half_result = std::async(parallel_forEach<Iterator, T>, first, mid_point, init);
+		parallel_forEach(mid_point, last, init);
 	}
 
 }
