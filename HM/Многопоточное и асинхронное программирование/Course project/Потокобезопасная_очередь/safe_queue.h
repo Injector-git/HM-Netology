@@ -4,16 +4,23 @@
 #include<mutex>
 #include<condition_variable>
 
+
+std::mutex mute;
+std::condition_variable ConditionVarible;
+bool add = false;
+
 template<class T>
 class safe_queue {
 public:
 	safe_queue() = default;
+
 	void push(T task) {
 
 		std::unique_lock ulock(mute);
 		ulock.lock();
+
 		std::cout << "PUSH" << std::endl;
-		queue_task.push(task);
+		queue_task.push(std::move(task));
 
 		ulock.unlock();
 		add = true;
@@ -32,7 +39,5 @@ public:
 
 private:
 	std::queue<T> queue_task;
-	std::mutex mute;
-	std::condition_variable ConditionVarible{ true };
-	bool add = false;
+
 };

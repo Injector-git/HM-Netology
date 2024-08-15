@@ -21,6 +21,7 @@ void print_name1() {
 
 int main()
 {
+
 	thread_pool tp;
 	std::vector<std::packaged_task<void()>> tasks(10);
 	
@@ -31,7 +32,6 @@ int main()
 	for (int i{}; i < tasks.size(); i+=2) {
 		tp.submit(std::move(tasks[i]));
 		tp.submit(std::move(tasks[i+1]));
-		tp.work();
 		std::this_thread::sleep_for(1000ms);
 	}
 
