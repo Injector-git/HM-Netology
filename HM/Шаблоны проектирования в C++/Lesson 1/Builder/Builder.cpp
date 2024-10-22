@@ -1,6 +1,5 @@
 ﻿#include <iostream>
-#include <Wt/Dbo/Dbo.h>
-#include <Wt/Dbo/backend/Postgres.h>
+#include <pqxx/pqxx>
 #include <vector>
 
 struct query {
@@ -16,16 +15,11 @@ public:
 	SqlSelectQueryBuilder() {
 		try {
 
-			std::string connString =
-				"host=localhost "
-				"port=5432 "
-				"dbname=Book_shop "
-				"user=postgres "
-				"password=Asdfghjkl_123 ";
-
-			auto connection = std::make_unique<Wt::Dbo::backend::Postgres>(connString);
-
-			s.setConnection(move(connection));
+			pqxx::connection conn{ "host=localhost " //обязательно пробел
+				"port=5432 " //стандартный порт psql
+				"dbname=Client " //своё имя базы
+				"user=postgres " //своё имя пользователя
+				"password=Asdfghjkl_123 " };    //свой пароль 
 
 		}
 
