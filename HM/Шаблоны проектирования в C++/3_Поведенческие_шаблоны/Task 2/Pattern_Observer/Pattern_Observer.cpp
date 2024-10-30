@@ -17,32 +17,26 @@ class Observed {
 public:
     void warning(const std::string& message) const {
         for (auto observer : observers_) {
-            if (auto strong_ptr = observer.lock()) {
-                strong_ptr->onWarning(message);
-            }
+                observer->onWarning(message);
         }
     }
     void error(const std::string& message) const {
         for (auto observer : observers_) {
-            if (auto strong_ptr = observer.lock()) {
-                strong_ptr->onError(message);
-            }
+            observer->onError(message);
         }
     }
     void fatalError(const std::string& message) const {
         for (auto observer : observers_) {
-            if (auto strong_ptr = observer.lock()) {
-                strong_ptr->onFatalError(message);
-            }
+                observer->onFatalError(message);
         }
     }
 
-    void AddObserver(std::weak_ptr<Observer> observer) {
+    void AddObserver(std::shared_ptr<Observer> observer) {
         observers_.push_back(observer);
     }
 
 private:
-    std::vector<std::weak_ptr<Observer>> observers_;
+    std::vector<std::shared_ptr<Observer>> observers_;
 };
 
 class Warning : public Observer {
@@ -97,9 +91,9 @@ private:
 
 int main()
 {
-    std::weak_ptr<Warning> war;
-    std::weak_ptr<Error> err("out.txt");
-    FatalError ferr("out.txt");
+    auto war = std::make_shared<Warning>();
+    auto err = std::make_shared<Error>("out.txt");
+    auto ferr = std::make_shared <FatalError> ("out.txt");
 
     Observed predmet_nablyudeniya;
 
