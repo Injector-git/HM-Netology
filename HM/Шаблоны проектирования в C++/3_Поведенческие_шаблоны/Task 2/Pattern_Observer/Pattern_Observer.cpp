@@ -17,31 +17,32 @@ class Observed {
 public:
     void warning(const std::string& message) const {
         for (auto observer : observers_) {
-            observer->onWarning(message);
+            if (auto strong_ptr = observer.lock()) {
+                strong_ptr->onWarning(message);
+            }
         }
     }
     void error(const std::string& message) const {
         for (auto observer : observers_) {
-            observer->onError(message);
+            if (auto strong_ptr = observer.lock()) {
+                strong_ptr->onError(message);
+            }
         }
     }
     void fatalError(const std::string& message) const {
         for (auto observer : observers_) {
-            observer->onFatalError(message);
+            if (auto strong_ptr = observer.lock()) {
+                strong_ptr->onFatalError(message);
+            }
         }
     }
 
-    void AddObserver(Observer* observer) {
+    void AddObserver(std::weak_ptr<Observer> observer) {
         observers_.push_back(observer);
     }
 
-    void RemoveObserver(Observer* observer) {
-        auto it = std::remove(observers_.begin(), observers_.end(), observer);
-        observers_.erase(it, observers_.end());
-    }
-
 private:
-    std::vector<Observer*> observers_;
+    std::vector<std::weak_ptr<Observer>> observers_;
 };
 
 class Warning : public Observer {
@@ -96,8 +97,8 @@ private:
 
 int main()
 {
-    Warning war;
-    Error err("out.txt");
+    std::weak_ptr<Warning> war;
+    std::weak_ptr<Error> err("out.txt");
     FatalError ferr("out.txt");
 
     Observed predmet_nablyudeniya;
@@ -109,8 +110,4 @@ int main()
     predmet_nablyudeniya.warning("Warning!!!");
     predmet_nablyudeniya.error("Error!!!");
     predmet_nablyudeniya.fatalError("Colapse!!!!");
-
-    predmet_nablyudeniya.RemoveObserver(war);
-    predmet_nablyudeniya.RemoveObserver(err);
-    predmet_nablyudeniya.RemoveObserver(ferr);
 }
