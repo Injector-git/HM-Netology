@@ -32,6 +32,7 @@ private:
 
 class LogHandler {
 public:
+
     void receiveMessage(const LogMessage& msg) {
         //проверяем, можем мы обработать данный тип сообщения
         if (canHadle() == msg.type()) {
@@ -48,11 +49,16 @@ public:
         }
     }
 
+    void AddNextHandler(LogHandler* next)
+    {
+        next_ = next;
+    }
+
 protected:
     void virtual handleMessage(const LogMessage& msg) = 0; //вызвать обработчик
     virtual Type canHadle() const = 0; //может ли принять такой тип
 private:
-    LogHandler* next_; //указатель на следующего обработчика
+    LogHandler* next_ = nullptr; //указатель на следующего обработчика
 };
 
 
@@ -119,7 +125,7 @@ private:
 
 int main()
 {
-    LogMessage message(error, "test");
+    LogMessage message(unknowmerror, "test");
     LogHandler* fatalerr = new FatalError;
     LogHandler* err = new Error("out.txt");
     LogHandler* war = new Warning();
@@ -127,8 +133,10 @@ int main()
     
 
     try {
+        fatalerr->AddNextHandler(err);
+        err->AddNextHandler(war);
+        war->AddNextHandler(unk);
         fatalerr->receiveMessage(message);
-        err->receiveMessage(message);
     }
     catch (std::runtime_error& err) { std::cout << err.what() << std::endl; }
     catch (...) { std::cout << "Unknown error"; }
