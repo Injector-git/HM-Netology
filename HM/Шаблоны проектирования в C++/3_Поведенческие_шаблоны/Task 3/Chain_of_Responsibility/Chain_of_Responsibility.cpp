@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#include <fstream>
 
 enum Type
 {
@@ -24,104 +25,113 @@ public:
         return _message;
     }
 
-    virtual void print() = 0;
-    virtual void setNextType(LogMessage* type) = 0;
-
 private:
     Type _type = fatalerror;
     std::string _message;
-    int asd = 3;
 };
 
-class FatalError : public LogMessage {
+class LogHandler {
 public:
-
-    void setNextType(LogMessage* type) {
-        nextType = type;
+    void receiveMessage(const LogMessage& msg) {
+        //проверяем, можем мы обработать данный тип сообщения
+        if (canHadle() == msg.type()) {
+            handleMessage(msg); //ок, обработали и закончили цепочку
+        }
+        else if (next_) //если не обработали, то рекурсивно отправляем следующему хендлеру
+        {
+            next_->receiveMessage(msg);
+        }
+        else
+        {
+            //никто не смог обработать сообщение, выбрасываем ошибку
+            throw(std::runtime_error("Error: no handler for this message was found!"));
+        }
     }
-    void print() override {
-        if (type() == _type) {
-            std::cout << message() + "fatalErr" << std::endl;// в консоль
-        }
-        else {
-            nextType->print();
-        }
+
+protected:
+    void virtual handleMessage(const LogMessage& msg) = 0; //вызвать обработчик
+    virtual Type canHadle() const = 0; //может ли принять такой тип
+private:
+    LogHandler* next_; //указатель на следующего обработчика
+};
+
+
+class FatalError : public LogHandler {
+public:
+    Type canHadle() const override {
+        return _type;
+    }
+    void handleMessage(const LogMessage& msg) override {
+        throw(std::runtime_error(msg.message()));// выбрасывание исключения с текстом сообщения
     }
 private:
-    LogMessage* nextType;
     Type _type = fatalerror;
 };
 
-class Error : public LogMessage {
-
-    void setNextType(LogMessage* type) {
-        nextType = type;
-    }
-    void print() override {
-        if (type() == _type) {
-            std::cout << message() + "Err" << std::endl;// в консоль
-        }
-        else {
-            nextType->print();
-        }
-    }
-private:
-    LogMessage* nextType;
-    Type _type = error;
-};
-
-class Warning : public LogMessage {
+class Error : public LogHandler {
 public:
 
-    void setNextType(LogMessage* type) {
-        nextType = type;
+    Error(std::string filename) {
+        file_.open(filename);
+
+        if (!file_.is_open()) {
+            throw std::runtime_error("Не удалось открыть файл: " + filename);
+        }
+    };
+
+    Type canHadle() const override {
+        return _type;
     }
-    void print() override {
-        if (type() == _type) {
-            std::cout << message() + "War" << std::endl;// в консоль
-        }
-        else {
-            nextType->print();
-        }
+    void handleMessage(const LogMessage& msg) override {
+        file_ << msg.message();//в файл
+        file_ << std::endl;
+    }
+
+private:
+    Type _type = error;
+    std::ofstream file_;
+};
+
+class Warning : public LogHandler {
+public:
+    Type canHadle() const override {
+        return _type;
+    }
+    void handleMessage(const LogMessage& msg) override {
+        std::cout << msg.message() + " war" << std::endl;// в консоль
     }
 private:
-    LogMessage* nextType;
     Type _type = warning;
 };
 
 
-class UnknowmError : public LogMessage {
+class UnknowmError : public LogHandler {
 public:
-
-    void setNextType(LogMessage* type) {
-        nextType = type;
+    Type canHadle() const override {
+        return _type;
     }
-    void print() override {
-        if (type() == _type) {
-            std::cout << message() + "War" << std::endl;// в консоль
-        }
-        else {
-            nextType->print();
-        }
+    void handleMessage(const LogMessage& msg) override {
+        throw std::runtime_error("raw message"); // выбрасывание исключения с текстом о необработанном сообщении
     }
 private:
-    LogMessage* nextType;
     Type _type = unknowmerror;
 };
+
 int main()
 {
     LogMessage message(error, "test");
-    FatalError* fatal = new FatalError();
-    Error* error = new Error();
-    Warning* war = new Warning();
-    UnknowmError* unk = new UnknowmError();
-    fatal->setNextType(error);
-    error->setNextType(war);
-    war->setNextType(unk);
-   /* auto message = std::make_unique<LogMessage>(error, "test");
-    auto fatal = std::make_shared<FatalError>;
-    auto error = std::make_shared<Error>;
-    auto war = std::make_unique<Warning>;
-    auto unk = std::make_unique<UnknowmError>;*/
+    LogHandler* fatalerr = new FatalError;
+    LogHandler* err = new Error("out.txt");
+    LogHandler* war = new Warning();
+    LogHandler* unk = new UnknowmError();
+    
+
+    try {
+        fatalerr->receiveMessage(message);
+        err->receiveMessage(message);
+    }
+    catch (std::runtime_error& err) { std::cout << err.what() << std::endl; }
+    catch (...) { std::cout << "Unknown error"; }
+    
 
 }
