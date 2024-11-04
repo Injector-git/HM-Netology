@@ -52,31 +52,19 @@ class PrintAsJSONL : public Printable {
     }
 };
 
-void saveTo(std::ofstream& file, const Printable* printable, Printable::Format format)
+void saveTo(std::ofstream& file, const Printable* printable)
 {
-
-    switch (format)
-    {
-    case Printable::Format::kText:
-        file << printable->print();
-        break;
-    case Printable::Format::kJSON:
-        file << printable->print();
-        break;
-    case Printable::Format::kHTML:
-        file << printable->print();
-        break;
-    }
+    printable->print();
 }
 
 void saveToAsHTML(std::ofstream& file, const Printable* printable) {
-    saveTo(file, printable, Printable::Format::kHTML);
+    saveTo(file, printable);
 }
 
 void saveToAsJSON(std::ofstream& file, const Printable* printable) {
-    saveTo(file, printable, Printable::Format::kJSON);
+    saveTo(file, printable);
 }
 
 void saveToAsText(std::ofstream& file, const Printable* printable) {
-    saveTo(file, printable, Printable::Format::kText);
+    saveTo(file, printable);
 }
