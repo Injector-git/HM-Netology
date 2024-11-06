@@ -8,7 +8,7 @@ struct Report
     std::string content;
 };
 
-class Printer {
+class Printer : public Report {
 public:
     virtual ~Printer() = default;
     virtual std::string wrap_element(const std::string& data) const = 0;
@@ -42,7 +42,12 @@ public:
         return data;
     }
     std::string wrap_report(const std::vector<std::string>& elements) const override {
-        //TODO: склейка элементов через новую строку
+        std::string Concatenation;
+        for (int i = 0; i < elements.size(); i++) {
+            Concatenation += elements.at(i);
+            Concatenation += "\n";
+        }
+        return Concatenation;
     }
 };
 
@@ -56,8 +61,9 @@ void ReportFormatter(std::ofstream& file, Report& report, std::shared_ptr<Printe
 }
 
 int main() {
-    Report rep{ "18.02.2032", "Test", "NoContent" };
+    Report rep{ "06.11.2024", "Test", "NoContent" };
     std::ofstream file("out.txt");
-    auto pr = std::make_shared <PrinterText>;
+    auto pr = std::make_shared <PrinterText>();
+
     ReportFormatter(file, rep, pr);
 }
