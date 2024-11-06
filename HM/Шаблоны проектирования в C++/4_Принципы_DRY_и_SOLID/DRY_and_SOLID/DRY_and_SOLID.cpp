@@ -1,70 +1,63 @@
 ﻿#include <fstream>
+#include <vector>
 
-class Data
+struct Report
 {
+    std::string date;
+    std::string title;
+    std::string content;
+};
+
+class Printer {
 public:
-    enum class Format
-    {
-        kText,
-        kHTML,
-        kJSON
-    };
-    Data() = default;
-    Data(std::string data, Format format)
-        : data_(std::move(data)), format_(format) {}
-protected:
-    std::string data_;
-    Format format_;
+    virtual ~Printer() = default;
+    virtual std::string wrap_element(const std::string& data) const = 0;
+    virtual std::string wrap_report(const std::vector<std::string>& elements) const = 0;
 };
 
-class Printable : public Data {
+
+class PrinterHTML : public Printer {
 public:
-    explicit Printable(Printable* printable) {
-        printble_ = printable;
+    std::string wrap_element(const std::string& data) const override {
+        return "<p>" + data + "</p>";
     }
-    virtual std::string print() const = 0;
-private:
-    Printable* printble_;
-};
-
-
-class PrintAsHTML : public Printable {
-
-    explicit PrintAsHTML(Printable* data) : Printable(data) {};
-    std::string print() const override {
-        return "<html>" + data_ + "<html/>";
+    std::string wrap_report(const std::vector<std::string>& elements) const override {
+        //TODO: склейка элементов через новую строку и оборачивание в html-тег
     }
 };
 
-class PrintAsText : public Printable {
-
-    explicit PrintAsText(Printable* data) : Printable(data) {};
-    std::string print() const override {
-        return data_;
+class PrinterJSON : public Printer {
+public:
+    std::string wrap_element(const std::string& data) const override {
+        return "{ \"item\": \"" + data + "\"}";
+    }
+    std::string wrap_report(const std::vector<std::string>& elements) const override {
+        //TODO: склейка элементов через , и оборачивание в массив - [ elem1, elem2 ]
     }
 };
 
-class PrintAsJSONL : public Printable {
-
-    explicit PrintAsJSONL(Printable* data) : Printable(data) {};
-    std::string print() const override {
-        return "{ \"data\": \"" + data_ + "\"}";
+class PrinterText : public Printer {
+public:
+    std::string wrap_element(const std::string& data) const override {
+        return data;
+    }
+    std::string wrap_report(const std::vector<std::string>& elements) const override {
+        //TODO: склейка элементов через новую строку
     }
 };
 
-void saveTo(std::ofstream& file, const Printable* printable)
+void ReportFormatter(std::ofstream& file, Report& report, std::shared_ptr<Printer> printer)
 {
-    printable->print();
+    std::vector<std::string> elements;
+    elements.push_back(printer->wrap_element(report.date));
+    elements.push_back(printer->wrap_element(report.title));
+    elements.push_back(printer->wrap_element(report.content));
+    file << printer->wrap_report(elements);
 }
 
-void saveToAsHTML(std::ofstream& file, const Printable* printable) {
-    saveTo(file, printable);
-}
-
-void saveToAsJSON(std::ofstream& file, const Printable* printable) {
-    saveTo(file, printable);
-}
-
-void saveToAsText(std::ofstream& file, const Printable* printable) {
-    saveTo(file, printable);
+int main() {
+    Report rep{ "18.02.2032", "Test", "NoContent" };
+    std::ofstream file("out.txt");
+    auto pr = std::make_shared <PrinterText>;
+    ReportFormatter(file, rep, pr);
 }
