@@ -1,0 +1,79 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-f6a8399bae2783f6188e.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "Basic_Qt",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "Basic_Qt::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Basic_Qt-Debug-cae48565643559680b58.json",
+					"name" : "Basic_Qt",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Basic_Qt_autogen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Basic_Qt_autogen-Debug-88ebe98978cc197479d0.json",
+					"name" : "Basic_Qt_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Basic_Qt_autogen_timestamp_deps::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Basic_Qt_autogen_timestamp_deps-Debug-6db78dc10a6dcf1f8b17.json",
+					"name" : "Basic_Qt_autogen_timestamp_deps",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "D:/Netology/Netology HM/HM/Qt/Lesson 2/build-Basic_Qt-Desktop_Qt_6_6_0_MinGW_64_bit-Debug",
+		"source" : "D:/Netology/Netology HM/HM/Qt/Lesson 2/Basic_Qt"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 4
+	}
+}

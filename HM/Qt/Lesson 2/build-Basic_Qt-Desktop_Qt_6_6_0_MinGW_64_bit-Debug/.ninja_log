@@ -1,0 +1,24 @@
+# ninja log v5
+2	332	7542513256361278	Basic_Qt_autogen/timestamp	e43dc4ef06095768
+2	332	7542513256361278	Basic_Qt_autogen/mocs_compilation.cpp	e43dc4ef06095768
+2	332	7542513256361278	D:/Netology/Netology HM/HM/Qt/Lesson 2/build-Basic_Qt-Desktop_Qt_6_6_0_MinGW_64_bit-Debug/Basic_Qt_autogen/timestamp	e43dc4ef06095768
+2	332	7542513256361278	D:/Netology/Netology HM/HM/Qt/Lesson 2/build-Basic_Qt-Desktop_Qt_6_6_0_MinGW_64_bit-Debug/Basic_Qt_autogen/mocs_compilation.cpp	e43dc4ef06095768
+334	430	7542513258046647	CMakeFiles/Basic_Qt.dir/Basic_Qt_autogen/mocs_compilation.cpp.obj	c7e205b910205b51
+337	2008	7542513273824426	CMakeFiles/Basic_Qt.dir/main.cpp.obj	d545de7185da9d4a
+2011	2185	7542513275571306	Basic_Qt.exe	ee970f19da7016dc
+15	158	7542513695515485	Basic_Qt_autogen/timestamp	e43dc4ef06095768
+15	158	7542513695515485	Basic_Qt_autogen/mocs_compilation.cpp	e43dc4ef06095768
+15	158	7542513695515485	D:/Netology/Netology HM/HM/Qt/Lesson 2/build-Basic_Qt-Desktop_Qt_6_6_0_MinGW_64_bit-Debug/Basic_Qt_autogen/timestamp	e43dc4ef06095768
+15	158	7542513695515485	D:/Netology/Netology HM/HM/Qt/Lesson 2/build-Basic_Qt-Desktop_Qt_6_6_0_MinGW_64_bit-Debug/Basic_Qt_autogen/mocs_compilation.cpp	e43dc4ef06095768
+15	141	7542513849179564	Basic_Qt_autogen/timestamp	e43dc4ef06095768
+15	141	7542513849179564	Basic_Qt_autogen/mocs_compilation.cpp	e43dc4ef06095768
+15	141	7542513849179564	D:/Netology/Netology HM/HM/Qt/Lesson 2/build-Basic_Qt-Desktop_Qt_6_6_0_MinGW_64_bit-Debug/Basic_Qt_autogen/timestamp	e43dc4ef06095768
+15	141	7542513849179564	D:/Netology/Netology HM/HM/Qt/Lesson 2/build-Basic_Qt-Desktop_Qt_6_6_0_MinGW_64_bit-Debug/Basic_Qt_autogen/mocs_compilation.cpp	e43dc4ef06095768
+145	1670	7542513864468652	CMakeFiles/Basic_Qt.dir/main.cpp.obj	d545de7185da9d4a
+1683	1804	7542513865775176	Basic_Qt.exe	ee970f19da7016dc
+12	134	7542514007492997	Basic_Qt_autogen/timestamp	e43dc4ef06095768
+12	134	7542514007492997	Basic_Qt_autogen/mocs_compilation.cpp	e43dc4ef06095768
+12	134	7542514007492997	D:/Netology/Netology HM/HM/Qt/Lesson 2/build-Basic_Qt-Desktop_Qt_6_6_0_MinGW_64_bit-Debug/Basic_Qt_autogen/timestamp	e43dc4ef06095768
+12	134	7542514007492997	D:/Netology/Netology HM/HM/Qt/Lesson 2/build-Basic_Qt-Desktop_Qt_6_6_0_MinGW_64_bit-Debug/Basic_Qt_autogen/mocs_compilation.cpp	e43dc4ef06095768
+138	1651	7542514022657359	CMakeFiles/Basic_Qt.dir/main.cpp.obj	d545de7185da9d4a
+1651	1778	7542514023884060	Basic_Qt.exe	ee970f19da7016dc

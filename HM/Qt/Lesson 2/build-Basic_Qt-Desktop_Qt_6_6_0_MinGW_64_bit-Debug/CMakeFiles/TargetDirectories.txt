@@ -1,0 +1,9 @@
+D:/Netology/Netology HM/HM/Qt/Lesson 2/build-Basic_Qt-Desktop_Qt_6_6_0_MinGW_64_bit-Debug/CMakeFiles/Basic_Qt.dir
+D:/Netology/Netology HM/HM/Qt/Lesson 2/build-Basic_Qt-Desktop_Qt_6_6_0_MinGW_64_bit-Debug/CMakeFiles/edit_cache.dir
+D:/Netology/Netology HM/HM/Qt/Lesson 2/build-Basic_Qt-Desktop_Qt_6_6_0_MinGW_64_bit-Debug/CMakeFiles/rebuild_cache.dir
+D:/Netology/Netology HM/HM/Qt/Lesson 2/build-Basic_Qt-Desktop_Qt_6_6_0_MinGW_64_bit-Debug/CMakeFiles/list_install_components.dir
+D:/Netology/Netology HM/HM/Qt/Lesson 2/build-Basic_Qt-Desktop_Qt_6_6_0_MinGW_64_bit-Debug/CMakeFiles/install.dir
+D:/Netology/Netology HM/HM/Qt/Lesson 2/build-Basic_Qt-Desktop_Qt_6_6_0_MinGW_64_bit-Debug/CMakeFiles/install/local.dir
+D:/Netology/Netology HM/HM/Qt/Lesson 2/build-Basic_Qt-Desktop_Qt_6_6_0_MinGW_64_bit-Debug/CMakeFiles/install/strip.dir
+D:/Netology/Netology HM/HM/Qt/Lesson 2/build-Basic_Qt-Desktop_Qt_6_6_0_MinGW_64_bit-Debug/CMakeFiles/Basic_Qt_autogen_timestamp_deps.dir
+D:/Netology/Netology HM/HM/Qt/Lesson 2/build-Basic_Qt-Desktop_Qt_6_6_0_MinGW_64_bit-Debug/CMakeFiles/Basic_Qt_autogen.dir
