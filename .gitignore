@@ -399,3 +399,6 @@ FodyWeavers.xsd
 
 # Cmake
 */out
+
+#Qt
+build-*
