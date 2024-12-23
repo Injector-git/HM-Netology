@@ -31,7 +31,7 @@
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
-         <widget class="QRadioButton" name="radioButton">
+         <widget class="QRadioButton" name="radioButton_1">
           <property name="text">
            <string>1 radio Batton</string>
           </property>
@@ -48,30 +48,6 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="comboBox">
-       <item>
-        <property name="text">
-         <string>1 element</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>2 element</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>3 element</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>4 element</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item>
       <widget class="QPushButton" name="pushButton">
        <property name="cursor">
         <cursorShape>ArrowCursor</cursorShape>
@@ -80,17 +56,17 @@
         <string>ЖМИ</string>
        </property>
        <property name="checkable">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
      </item>
      <item>
+      <widget class="QComboBox" name="comboBox"/>
+     </item>
+     <item>
       <widget class="QProgressBar" name="progressBar">
-       <property name="maximum">
-        <number>100</number>
-       </property>
        <property name="value">
-        <number>0</number>
+        <number>24</number>
        </property>
       </widget>
      </item>
