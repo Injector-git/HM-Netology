@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->pushButton->setCheckable(true);
 
     ui->progressBar->setMinimum(0);
-    //ui->progressBar->setMaximum(10);
+    ui->progressBar->setMaximum(10);
     ui->progressBar->setValue(0);
     //connect(ui->pushButton, &QPushButton::toggled, this, &MainWindow::on_pushButton_toggled);
 
@@ -42,11 +42,11 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_toggled(bool checked)
 {
-    if( ui->progressBar->value()>=100) {
+    if( ui->progressBar->value()>=10) {
         ui->progressBar->setValue(0);
     }
     else  {
-        ui->progressBar->setValue(ui->progressBar->value()+10);
+        ui->progressBar->setValue(ui->progressBar->value()+1);
     }
 }
 
