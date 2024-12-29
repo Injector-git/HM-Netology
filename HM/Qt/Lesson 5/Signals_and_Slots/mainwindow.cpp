@@ -57,7 +57,6 @@ void MainWindow::on_button_start_toggled(bool checked)
 
         watch->watch_start();
 
-        watch->currentTime();
 
     }
     else {
