@@ -2,6 +2,11 @@
 
 
 
+Stopwatch::~Stopwatch()
+{
+    delete timer;
+}
+
 void Stopwatch::watch_start() {
     timer->start(0.1); // Запускаем таймер с заданным интервалом
 }
@@ -10,7 +15,11 @@ void Stopwatch::watch_stop() {
     timer->stop(); // Останавливаем таймер
 }
 
+void Stopwatch::clear_time(){
+    timeElapsed = QTime(0, 0); // Начальное значение времени
+}
+
 void Stopwatch::currentTime() {
-    QDateTime current = QDateTime::currentDateTime();
-    emit currentTimeUpdated(current.toString("yyyy-MM-dd HH:mm:ss"));
+    timeElapsed = timeElapsed.addSecs(1);
+    emit currentTimeUpdated(timeElapsed.toString("HH:mm:ss"));
 }

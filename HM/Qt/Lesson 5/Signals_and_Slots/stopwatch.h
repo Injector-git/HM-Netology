@@ -2,6 +2,7 @@
 #define STOPWATCH_H
 
 #include <QTimer>
+#include <QTime>
 #include <QObject>
 #include <QDateTime>
 
@@ -16,9 +17,13 @@ public:
         connect(timer, &QTimer::timeout, this, &Stopwatch::currentTime); // Подключаем сигнал таймера к слоту
     }
 
+    ~Stopwatch();
+
     void watch_start(); // Запустить таймер
 
     void watch_stop(); // Остановить таймер
+
+    void clear_time(); //сбросить время
 
 signals:
     void currentTimeUpdated(const QString &currentTime);
@@ -28,7 +33,7 @@ public slots:
 
 private:
     QTimer *timer;
-
+    QTime timeElapsed = QTime(0, 0);  // Начальное значение времени
 };
 
 #endif // STOPWATCH_H

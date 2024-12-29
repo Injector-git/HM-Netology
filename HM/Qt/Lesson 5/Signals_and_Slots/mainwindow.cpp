@@ -19,8 +19,16 @@ MainWindow::MainWindow(QWidget *parent)
 
         //кнопки
 
+    //textBrowser
+
+    ui->textBrowser->setReadOnly(true);
+
+        //textBrowser
+
+
     //таймер
 
+    ui->label->setText("00:00:00");
     // Создаем экземпляр Stopwatch
     watch = new Stopwatch(this);
     // Подключаем сигнал к слоту
@@ -49,7 +57,7 @@ void MainWindow::on_button_start_toggled(bool checked)
 
         watch->watch_start();
 
-        update_label(????);
+        watch->currentTime();
 
     }
     else {
@@ -58,5 +66,32 @@ void MainWindow::on_button_start_toggled(bool checked)
 
         watch->watch_stop();
     }
+}
+
+
+void MainWindow::on_button_clear_clicked()
+{
+    //обнулить показатели
+    ui->label->setText("00:00:00");
+    watch->clear_time();
+
+    loop_number=1;
+    ui->textBrowser->clear();
+    loop_time_1=QTime(0,0);
+    loop_time_2=QTime(0,0);
+    secondsDifference = QTime(0,0);
+}
+
+
+void MainWindow::on_button_loop_clicked()
+{
+    loop_time_1=QTime::fromString(ui->label->text(), "hh:mm:ss");
+    secondsDifference = secondsDifference.addSecs(loop_time_2.secsTo(loop_time_1));
+
+    ui->textBrowser->append(QString::number(loop_number)+ " " + secondsDifference.toString("hh:mm:ss") + " (" + loop_time_1.toString("hh:mm:ss") + " " + loop_time_2.toString("hh:mm:ss") + ")");
+
+    secondsDifference = QTime(0,0);
+    loop_time_2 = loop_time_1;
+    loop_number++;
 }
 
