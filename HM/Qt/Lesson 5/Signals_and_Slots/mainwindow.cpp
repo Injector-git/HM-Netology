@@ -45,8 +45,8 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::update_label(const QString &currentTime) {
-    ui->label->setText(currentTime); // Обновляем текст QLabel
+void MainWindow::update_label(const QTime &currentTime) {
+    ui->label->setText(currentTime.toString("hh:mm:ss")); // Обновляем текст QLabel
 }
 
 void MainWindow::on_button_start_toggled(bool checked)
@@ -76,21 +76,21 @@ void MainWindow::on_button_clear_clicked()
 
     loop_number=1;
     ui->textBrowser->clear();
-    loop_time_1=QTime(0,0);
-    loop_time_2=QTime(0,0);
-    secondsDifference = QTime(0,0);
+    loop_time_1=QTime(0, 0);
+    loop_time_2=QTime(0, 0);
+    secondsDifference = QTime(0, 0);
 }
 
 
 void MainWindow::on_button_loop_clicked()
 {
     loop_time_1=QTime::fromString(ui->label->text(), "hh:mm:ss");
+
     secondsDifference = secondsDifference.addSecs(loop_time_2.secsTo(loop_time_1));
 
-    ui->textBrowser->append(QString::number(loop_number)+ " " + secondsDifference.toString("hh:mm:ss") + " (" + loop_time_1.toString("hh:mm:ss") + " " + loop_time_2.toString("hh:mm:ss") + ")");
+    ui->textBrowser->append("loop: " + QString::number(loop_number)+ " time: " + secondsDifference.toString("hh:mm:ss")  );
 
-    secondsDifference = QTime(0,0);
+    secondsDifference = QTime(0, 0);
     loop_time_2 = loop_time_1;
     loop_number++;
 }
-

@@ -20,6 +20,6 @@ void Stopwatch::clear_time(){
 }
 
 void Stopwatch::currentTime() {
-    timeElapsed = timeElapsed.addSecs(1);
-    emit currentTimeUpdated(timeElapsed.toString("HH:mm:ss"));
+    timeElapsed = timeElapsed.addMSecs(1);
+    emit currentTimeUpdated(timeElapsed);
 }

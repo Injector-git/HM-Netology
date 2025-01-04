@@ -26,14 +26,14 @@ public:
     void clear_time(); //сбросить время
 
 signals:
-    void currentTimeUpdated(const QString &currentTime);
+    void currentTimeUpdated(const QTime &currentTime);
 
 public slots:
     void  currentTime(); // Слот для обработки события таймера
 
 private:
     QTimer *timer;
-    QTime timeElapsed = QTime(0, 0);  // Начальное значение времени
+    QTime timeElapsed = QTime(0, 0, 0);  // Начальное значение времени
 };
 
 #endif // STOPWATCH_H
