@@ -8,7 +8,7 @@ Stopwatch::~Stopwatch()
 }
 
 void Stopwatch::watch_start() {
-    timer->start(0.1); // Запускаем таймер с заданным интервалом
+    timer->start(); // Запускаем таймер с заданным интервалом
 }
 
 void Stopwatch::watch_stop() {
@@ -16,7 +16,7 @@ void Stopwatch::watch_stop() {
 }
 
 void Stopwatch::clear_time(){
-    timeElapsed = QTime(0, 0); // Начальное значение времени
+    timeElapsed = QTime(0, 0, 0); // Начальное значение времени
 }
 
 void Stopwatch::currentTime() {

@@ -46,7 +46,7 @@ MainWindow::~MainWindow()
 
 
 void MainWindow::update_label(const QTime &currentTime) {
-    ui->label->setText(currentTime.toString("hh:mm:ss")); // Обновляем текст QLabel
+    ui->label->setText(currentTime.toString("hh:mm:mm:ss")); // Обновляем текст QLabel
 }
 
 void MainWindow::on_button_start_toggled(bool checked)
