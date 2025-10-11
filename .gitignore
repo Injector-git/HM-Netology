@@ -402,3 +402,17 @@ FodyWeavers.xsd
 
 #Qt
 build-*
+
+#UE
+/Binaries/
+/Intermediate/
+/DerivedDataCache/
+/.vs/
+/.vscode/
+/Saved/
+/Build/
+*.sln
+*.opensdf
+*.sdf
+*.VC.db
+*.suo
